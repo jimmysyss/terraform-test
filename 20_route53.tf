@@ -1,35 +1,35 @@
-module "zones" {
-  source = "terraform-aws-modules/route53/aws//modules/zones"
+# module "zones" {
+#   source = "terraform-aws-modules/route53/aws//modules/zones"
 
-  zones = {
-    "jhipster.jimmysyss.com" = {
-      comment = "jhipster.jimmysyss.com"
-    }
+#   zones = {
+#     "jhipster.jimmysyss.com" = {
+#       comment = "jhipster.jimmysyss.com"
+#     }
 
-    # "app.terraform-aws-modules-example.com" = {
-    #   comment = "app.terraform-aws-modules-example.com"
-    # }
+#     "app.terraform-aws-modules-example.com" = {
+#       comment = "app.terraform-aws-modules-example.com"
+#     }
 
-    # "private-vpc.terraform-aws-modules-example.com" = {
-    #   # in case than private and public zones with the same domain name
-    #   domain_name = "terraform-aws-modules-example.com"
-    #   comment     = "private-vpc.terraform-aws-modules-example.com"
-    #   vpc = [
-    #     {
-    #       vpc_id = module.vpc.vpc_id
-    #     },
-    #     {
-    #       vpc_id = module.vpc2.vpc_id
-    #     },
-    #   ]
-    # }
-  }
-}
+#     "private-vpc.terraform-aws-modules-example.com" = {
+#       # in case than private and public zones with the same domain name
+#       domain_name = "terraform-aws-modules-example.com"
+#       comment     = "private-vpc.terraform-aws-modules-example.com"
+#       vpc = [
+#         {
+#           vpc_id = module.vpc.vpc_id
+#         },
+#         {
+#           vpc_id = module.vpc2.vpc_id
+#         },
+#       ]
+#     }
+#   }
+# }
 
 module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
 
-  zone_name = keys(module.zones.route53_zone_zone_id)[0]
+  zone_id = "Z078377437DBQZBAF6HN9"
 
   records = [
     {
@@ -37,10 +37,11 @@ module "records" {
       type    = "A"
       alias   = {
         name    = module.alb.lb_dns_name
-        # zone_id = module.zones.route53_zone_zone_id
+        zone_id = module.alb.lb_zone_id
+        evaluate_target_health = true
       }
     },
   ]
 
-  depends_on = [module.zones]
+  # depends_on = [module.zones]
 }
