@@ -43,5 +43,5 @@ module "records" {
     },
   ]
 
-  # depends_on = [module.zones]
+  depends_on = [module.alb]
 }
