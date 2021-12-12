@@ -1,6 +1,7 @@
 resource "aws_route53_record" "main" {
   zone_id = var.zone_id
-  name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}.${var.domain}" : "${var.name}-${var.env}.${var.domain}"
+  // name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}.${var.domain}" : "${var.name}-${var.env}.${var.domain}"
+  name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}" : "${var.name}-${var.env}"
   type    = "A"
   alias {
     name                   = module.alb.lb_dns_name
