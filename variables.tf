@@ -23,6 +23,11 @@ variable "domain" {
   default     = ""
 }
 
+variable "zone_id" {
+  description = "Route 53 Zone ID"
+  default     = "Z078377437DBQZBAF6HN9"
+}
+
 variable "fargate_app_name" {
   description = "Target Docker image to run"
   default     = "jimmysyss/clicktrade:latest"
