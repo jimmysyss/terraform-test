@@ -29,7 +29,7 @@ module "zones" {
 module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
 
-  zone_id = module.zones.route53_zone_zone_id
+  zone_name = keys(module.zones.route53_zone_zone_id)[0]
 
   records = [
     {
