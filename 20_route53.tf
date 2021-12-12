@@ -37,7 +37,7 @@ module "records" {
       type    = "A"
       alias   = {
         name    = module.alb.lb_dns_name
-        zone_id = module.zones.route53_zone_zone_id
+        # zone_id = module.zones.route53_zone_zone_id
       }
     },
   ]
