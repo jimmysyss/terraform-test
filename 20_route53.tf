@@ -33,7 +33,7 @@ module "records" {
 
   records = [
     {
-      name    = "${var.env}"
+      name    = "dev1"
       type    = "A"
       alias   = {
         name    = module.alb.lb_dns_name
