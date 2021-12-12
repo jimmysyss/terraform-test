@@ -1,6 +1,5 @@
 resource "aws_route53_record" "main" {
   zone_id = var.zone_id
-  // name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}.${var.domain}" : "${var.name}-${var.env}.${var.domain}"
   name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}" : "${var.name}-${var.env}"
   type    = "A"
   alias {
@@ -9,3 +8,13 @@ resource "aws_route53_record" "main" {
     evaluate_target_health = true
   }
 }
+
+# resource "aws_route53_record" "main" {
+#   zone_id = var.zone_id
+#   name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}" : "${var.name}-${var.env}"
+#   type    = "A"
+#   alias {
+#     name                   = module.cloudfront.cloudfront_distribution_domain_name
+#     zone_id                = module.cloudfront.cloudfront_distribution_hosted_zone_id
+#   }
+# }
