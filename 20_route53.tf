@@ -33,11 +33,11 @@ module "records" {
 
   records = [
     {
-      name    = "ALB"
+      name    = "${var.env}"
       type    = "A"
       alias   = {
-        name    = "d-10qxlbvagl.execute-api.eu-west-1.amazonaws.com"
-        zone_id = "ZLY8HYME6SFAD"
+        name    = module.alb.lb_dns_name
+        zone_id = module.zones.route53_zone_zone_id
       }
     },
   ]
