@@ -26,22 +26,33 @@
 #   }
 # }
 
-module "records" {
-  source  = "terraform-aws-modules/route53/aws//modules/records"
+# module "records" {
+#   source  = "terraform-aws-modules/route53/aws//modules/records"
 
+#   zone_id = "Z078377437DBQZBAF6HN9"
+
+#   records = [
+#     {
+#       name    = "dev1"
+#       type    = "A"
+#       alias   = {
+#         name    = module.alb.lb_dns_name
+#         zone_id = module.alb.lb_zone_id
+#         evaluate_target_health = true
+#       }
+#     },
+#   ]
+
+#   depends_on = [module.alb]
+# }
+
+resource "aws_route53_record" "main" {
   zone_id = "Z078377437DBQZBAF6HN9"
-
-  records = [
-    {
-      name    = "dev1"
-      type    = "A"
-      alias   = {
-        name    = module.alb.lb_dns_name
-        zone_id = module.alb.lb_zone_id
-        evaluate_target_health = true
-      }
-    },
-  ]
-
-  depends_on = [module.alb]
+  name    = "dev1"
+  type    = "A"
+  alias {
+    name                   = module.alb.lb_dns_name
+    zone_id                = module.alb.lb_zone_id
+    evaluate_target_health = true
+  }
 }
