@@ -64,7 +64,7 @@ module "cloudfront" {
     group_one = {
       failover_status_codes    = [403, 404, 500, 502]
       primary_member_origin_id = "appsync"
-      # secondary_member_origin_id = "s3_one"
+      secondary_member_origin_id = "appsync"
     }
   }
 
