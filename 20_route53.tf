@@ -1,6 +1,6 @@
-resource "aws_route53_record" "main" {
+resource "aws_route53_record" "alb" {
   zone_id = var.zone_id
-  name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}" : "${var.name}-${var.env}"
+  name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}-alb" : "${var.name}-${var.env}-alb"
   type    = "A"
   alias {
     name                   = module.alb.lb_dns_name
@@ -9,9 +9,9 @@ resource "aws_route53_record" "main" {
   }
 }
 
-resource "aws_route53_record" "cf" {
+resource "aws_route53_record" "main" {
   zone_id = var.zone_id
-  name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}" : "${var.name}-${var.env}-cf"
+  name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}" : "${var.name}-${var.env}"
   type    = "A"
   alias {
     name                   = module.cloudfront.cloudfront_distribution_domain_name

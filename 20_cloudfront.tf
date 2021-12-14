@@ -27,7 +27,7 @@ module "cloudfront" {
   origin = {
     appsync1 = {
 #      domain_name = module.alb.lb_dns_name
-      domain_name = "jhipster-dev1.jimmy.asia"
+      domain_name = "jhipster-dev1-alb.jimmy.asia"
       custom_origin_config = {
         http_port              = 80
         https_port             = 443
@@ -54,7 +54,7 @@ module "cloudfront" {
 
     appsync2 = {
       #domain_name = module.alb.lb_dns_name
-      domain_name = "jhipster-dev1.jimmy.asia"
+      domain_name = "jhipster-dev1-alb.jimmy.asia"
       custom_origin_config = {
         http_port              = 80
         https_port             = 443
