@@ -9,12 +9,12 @@ resource "aws_route53_record" "main" {
   }
 }
 
-# resource "aws_route53_record" "main" {
-#   zone_id = var.zone_id
-#   name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}" : "${var.name}-${var.env}"
-#   type    = "A"
-#   alias {
-#     name                   = module.cloudfront.cloudfront_distribution_domain_name
-#     zone_id                = module.cloudfront.cloudfront_distribution_hosted_zone_id
-#   }
-# }
+resource "aws_route53_record" "cf" {
+  zone_id = var.zone_id
+  name    = (length(regexall("prod", var.env)) > 0) ? "${var.name}" : "${var.name}-${var.env}-cf"
+  type    = "A"
+  alias {
+    name                   = module.cloudfront.cloudfront_distribution_domain_name
+    zone_id                = module.cloudfront.cloudfront_distribution_hosted_zone_id
+  }
+}
