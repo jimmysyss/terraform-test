@@ -73,8 +73,13 @@ variable "vpc_one_nat_gateway_per_az" {
 }
 
 variable "alb_tls_cert_arn" {
-  description = "AWS Certificate ARN for TLS Cert"
+  description = "AWS Certificate ARN for TLS Cert on ALB"
   default     = "arn:aws:acm:ap-southeast-1:013813894368:certificate/b442a344-f7b8-4641-9a71-3b58824a535e"
+}
+
+variable "cloudfront_tls_cert_arn" {
+  description = "AWS Certificate ARN for TLS Cert on Cloudfront"
+  default     = "arn:aws:acm:us-east-1:013813894368:certificate/896a0674-9178-4c48-af53-f3fd8fb9c61f"
 }
 
 variable "db_allocated_storage" {

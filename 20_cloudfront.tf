@@ -144,7 +144,7 @@ module "cloudfront" {
   #   ]
 
   viewer_certificate = {
-    acm_certificate_arn = var.alb_tls_cert_arn
+    acm_certificate_arn = var.cloudfront_tls_cert_arn
     ssl_support_method  = "sni-only"
   }
 
