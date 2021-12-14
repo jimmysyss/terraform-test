@@ -25,7 +25,33 @@ module "cloudfront" {
   #   }
 
   origin = {
-    appsync = {
+    appsync1 = {
+      domain_name = module.alb.lb_dns_name
+      custom_origin_config = {
+        http_port              = 80
+        https_port             = 443
+        origin_protocol_policy = "https-only"
+        origin_ssl_protocols   = ["TLSv1.2"]
+      }
+
+      custom_header = [
+        {
+          name  = "X-Forwarded-Scheme"
+          value = "https"
+        },
+        {
+          name  = "X-Frame-Options"
+          value = "SAMEORIGIN"
+        }
+      ]
+
+      origin_shield = {
+        enabled              = true
+        origin_shield_region = "${var.region}"
+      }
+    }
+
+    appsync2 = {
       domain_name = module.alb.lb_dns_name
       custom_origin_config = {
         http_port              = 80
@@ -63,13 +89,13 @@ module "cloudfront" {
   origin_group = {
     group_one = {
       failover_status_codes    = [403, 404, 500, 502]
-      primary_member_origin_id = "appsync"
-      secondary_member_origin_id = "appsync"
+      primary_member_origin_id = "appsync1"
+      secondary_member_origin_id = "appsync2"
     }
   }
 
   default_cache_behavior = {
-    target_origin_id       = "appsync"
+    target_origin_id       = "appsync1"
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
