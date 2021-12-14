@@ -14,20 +14,21 @@ module "cloudfront" {
   # This rate is charged only once per month, per metric (up to 8 metrics per distribution).
   # create_monitoring_subscription = true
 
-#   create_origin_access_identity = true
-#   origin_access_identities = {
-#     s3_bucket_one = "My awesome CloudFront can access"
-#   }
+  #   create_origin_access_identity = true
+  #   origin_access_identities = {
+  #     s3_bucket_one = "My awesome CloudFront can access"
+  #   }
 
-#   logging_config = {
-#     bucket = module.log_bucket.s3_bucket_bucket_domain_name
-#     prefix = "cloudfront"
-#   }
+  #   logging_config = {
+  #     bucket = module.log_bucket.s3_bucket_bucket_domain_name
+  #     prefix = "cloudfront"
+  #   }
 
   origin = {
     appsync = {
       domain_name = module.alb.lb_dns_name
       custom_origin_config = {
+        http_port              = 80
         https_port             = 443
         origin_protocol_policy = "https-only"
         origin_ssl_protocols   = ["TLSv1.2"]
@@ -61,8 +62,8 @@ module "cloudfront" {
 
   origin_group = {
     group_one = {
-      failover_status_codes      = [403, 404, 500, 502]
-      primary_member_origin_id   = "appsync"
+      failover_status_codes    = [403, 404, 500, 502]
+      primary_member_origin_id = "appsync"
       # secondary_member_origin_id = "s3_one"
     }
   }
@@ -92,38 +93,38 @@ module "cloudfront" {
     # }
   }
 
-#   ordered_cache_behavior = [
-#     {
-#       path_pattern           = "/static/*"
-#       target_origin_id       = "s3_one"
-#       viewer_protocol_policy = "redirect-to-https"
+  #   ordered_cache_behavior = [
+  #     {
+  #       path_pattern           = "/static/*"
+  #       target_origin_id       = "s3_one"
+  #       viewer_protocol_policy = "redirect-to-https"
 
-#       allowed_methods = ["GET", "HEAD", "OPTIONS"]
-#       cached_methods  = ["GET", "HEAD"]
-#       compress        = true
-#       query_string    = true
+  #       allowed_methods = ["GET", "HEAD", "OPTIONS"]
+  #       cached_methods  = ["GET", "HEAD"]
+  #       compress        = true
+  #       query_string    = true
 
-#       function_association = {
-#         # Valid keys: viewer-request, viewer-response
-#         viewer-request = {
-#           function_arn = aws_cloudfront_function.example.arn
-#         }
+  #       function_association = {
+  #         # Valid keys: viewer-request, viewer-response
+  #         viewer-request = {
+  #           function_arn = aws_cloudfront_function.example.arn
+  #         }
 
-#         viewer-response = {
-#           function_arn = aws_cloudfront_function.example.arn
-#         }
-#       }
-#     }
-#   ]
+  #         viewer-response = {
+  #           function_arn = aws_cloudfront_function.example.arn
+  #         }
+  #       }
+  #     }
+  #   ]
 
   viewer_certificate = {
     acm_certificate_arn = var.alb_tls_cert_arn
     ssl_support_method  = "sni-only"
   }
 
-#   geo_restriction = {
-#     restriction_type = "whitelist"
-#     locations        = ["NO", "UA", "US", "GB", "HK"]
-#   }
+  #   geo_restriction = {
+  #     restriction_type = "whitelist"
+  #     locations        = ["NO", "UA", "US", "GB", "HK"]
+  #   }
 
 }
