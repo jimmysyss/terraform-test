@@ -108,14 +108,14 @@ data "aws_ami" "amazon_linux_ecs" {
 
 module "asg" {
   source = "terraform-aws-modules/autoscaling/aws"
-  #version = "~> 4.0"
+  version = "~> 4.0"
 
   name = "${var.name}-${var.env}-asg"
 
   # Launch configuration
   lc_name   = "${var.name}-${var.env}-asg"
-  #use_lc    = true
-  #create_lc = true
+  use_lc    = true
+  create_lc = true
 
   image_id                  = data.aws_ami.amazon_linux_ecs.id
   instance_type             = "t3.micro"
