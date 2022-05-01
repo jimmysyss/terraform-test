@@ -94,16 +94,16 @@ module "cloudfront" {
     }
   }
 
-  ordered_cache_behavior = [{
-    path_pattern           = "/api/*"
-    target_origin_id       = "group_one"
-    viewer_protocol_policy = "redirect-to-https"
-    allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
-    cached_methods         = ["GET", "HEAD"]
-    compress               = true
-    query_string           = true
-    #cache_policy_id        = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
-  }]
+  # ordered_cache_behavior = [{
+  #   path_pattern           = "/api/*"
+  #   target_origin_id       = "group_one"
+  #   viewer_protocol_policy = "redirect-to-https"
+  #   allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+  #   cached_methods         = ["GET", "HEAD"]
+  #   compress               = true
+  #   query_string           = true
+  #   #cache_policy_id        = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+  # }]
 
   default_cache_behavior = {
     target_origin_id       = "group_one"
