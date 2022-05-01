@@ -24,8 +24,9 @@ module "rds" {
   identifier = "${var.name}-${var.env}-rds"
 
   engine               = "postgres"
-  engine_version       = "12.4"
+  engine_version       = "14.1" 
   major_engine_version = "12"
+  family               = "postgres14"   # DB parameter group
   instance_class       = "db.t3.micro"  # Only T3 Micro supports storage encryption
   allocated_storage    = var.db_allocated_storage
 
