@@ -46,7 +46,7 @@ module "cloudfront" {
       ]
 
       origin_shield = {
-        enabled              = true
+        enabled              = false
         origin_shield_region = "${var.region}"
       }
     }
@@ -72,7 +72,7 @@ module "cloudfront" {
       ]
 
       origin_shield = {
-        enabled              = true
+        enabled              = false
         origin_shield_region = "${var.region}"
       }
     }
@@ -99,7 +99,7 @@ module "cloudfront" {
     target_origin_id       = "appsync1"
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
-    cached_methods         = []
+    cached_methods         = ["GET", "HEAD"]
     compress               = true
     query_string           = true
     min_ttl                = 0
