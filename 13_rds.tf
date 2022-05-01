@@ -47,7 +47,6 @@ module "rds" {
   #subnet_ids = module.vpc.database_subnets
   db_subnet_group_name = module.vpc.database_subnet_group
 
-  family = "postgres12"
   multi_az = length(regexall("stage", var.env)) > 0 || length(regexall("prod", var.env)) > 0
   storage_encrypted = true
 }
