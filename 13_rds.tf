@@ -31,7 +31,7 @@ module "rds" {
   allocated_storage    = var.db_allocated_storage
 
   #DBName must begin with a letter and contain only alphanumeric characters.
-  db_name     = "${var.name}${var.env}db"
+  db_name  = "${var.name}${var.env}db"
   username = var.db_username
   password = var.db_password
   port     = var.db_port
@@ -49,5 +49,8 @@ module "rds" {
 
   multi_az = length(regexall("stage", var.env)) > 0 || length(regexall("prod", var.env)) > 0
   storage_encrypted = true
+
+  # Disable default master password generation
+  create_random_password = false
 }
 
