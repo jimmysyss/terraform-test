@@ -110,7 +110,7 @@ module "asg" {
   source = "terraform-aws-modules/autoscaling/aws"
   #version = "~> 4.0"
 
-  asg_name = "${var.name}-${var.env}-asg"
+  name = "${var.name}-${var.env}-asg"
 
   # Launch configuration
   lc_name   = "${var.name}-${var.env}-asg"
