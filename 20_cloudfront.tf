@@ -96,7 +96,7 @@ module "cloudfront" {
 
   ordered_cache_behavior = [{
     path_pattern           = "/api/*"
-    target_origin_id       = "group_one"
+    target_origin_id       = "appsync1"
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods         = ["GET", "HEAD"]
@@ -107,7 +107,7 @@ module "cloudfront" {
   }]
 
   default_cache_behavior = {
-    target_origin_id       = "group_one"
+    target_origin_id       = "appsync1"
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
