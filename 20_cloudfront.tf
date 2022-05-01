@@ -96,6 +96,7 @@ module "cloudfront" {
 
   ordered_cache_behavior = [{
     path_pattern           = "/api/*"
+    target_origin_id       = "group_one"
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods         = ["GET", "HEAD"]
