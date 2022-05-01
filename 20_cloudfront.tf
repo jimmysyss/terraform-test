@@ -114,7 +114,7 @@ module "cloudfront" {
     query_string           = true
 
     # This is id for SecurityHeadersPolicy copied from https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-response-headers-policies.html
-    response_headers_policy_id = "67f7725c-6f97-4210-82d7-5512b31e9d03"
+    # response_headers_policy_id = "67f7725c-6f97-4210-82d7-5512b31e9d03"
 
     # lambda_function_association = {
 
