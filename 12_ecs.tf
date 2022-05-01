@@ -1,7 +1,7 @@
 module "key_pair" {
   source     = "terraform-aws-modules/key-pair/aws"
   key_name   = "${var.name}-${var.env}-ssh"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAnedrLwgS91xytxmbsF79WN5tXNQ8aGN6akN3n7kwEHvvhW6cI6EhbQDBkdDI0UmN/HaJ8BaVOsooFEFx1fgifo+MuFh/NriKKUOXSzW7HVGfztsAfOJQJGS3xX2I1xZDYyM24uax1whycqJApOU3TE9YJXFWvoA9Kwz9J8Pfkii9s9UkmuqSwI9hLagpmGF1h3ytCjlZUuLGu/7zyh8dJjTyiJ3AFxz9U0MQUoH2xbwr4LGb7lqsRWibtPeyaFgqP7+NtyiMNi7PwQdDPNx1Ztr/eu5xmiM61/8KhnZTVt/x0Cvrdifdbjy9gxvuQdqVX8VZZsZ5TuOMU1hoiFvC1w== rsa-key-20210721"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/te8jtSYXkNDwNWAR2GcNpXoDQPQh3/7SP6571rfLbWLp4aeZE2Sfx4KD6O8HxCsukfcVvRqUCv0yp6CzgN22apNP8lDdXP8b9aPF8fusMMHSev91vu0ms4wdP8Bv+UlknjutpPRo2/cwUYyQTJ2M1wTjBzUFQQf2eW0ihwOeHvb03rEKD3UvgZPXBVfxK43pVzstmMrkF14DP45zFra+lpol2uakRJDJ//7zUcPUW2J5SuOPWbUngIoQ5SzhYaxHZNAUQ55vk0ZpgtWwFKGHFltwIlKNp34fXwSI9vJXViZ8Ee6qdpt6dg3TFMmMKWiA9T4SOMj70rQ4PEZ6r/hh pi@raspberrypi"
   # tags = {
   #   Group = var.name
   #   Env   = var.env
