@@ -88,14 +88,24 @@ module "cloudfront" {
 
   origin_group = {
     group_one = {
-      failover_status_codes    = [403, 404, 500, 502]
+      failover_status_codes    = [500, 502, 503, 504]
       primary_member_origin_id = "appsync1"
       secondary_member_origin_id = "appsync2"
     }
   }
 
+  ordered_cache_behavior = [{
+    path_pattern           = "/api/*"
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods         = ["GET", "HEAD"]
+    compress               = true
+    query_string           = true
+    cache_policy_id        = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+  }]
+
   default_cache_behavior = {
-    target_origin_id       = "appsync1"
+    target_origin_id       = "group_one"
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
@@ -146,6 +156,7 @@ module "cloudfront" {
   viewer_certificate = {
     acm_certificate_arn = var.cloudfront_tls_cert_arn
     ssl_support_method  = "sni-only"
+    minimum_protocol_version = "TLSv1.2"
   }
 
   #   geo_restriction = {
