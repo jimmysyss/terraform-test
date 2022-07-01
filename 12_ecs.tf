@@ -58,7 +58,7 @@ resource "aws_ecs_capacity_provider" "prov1" {
 module "ecs" {
   source = "terraform-aws-modules/ecs/aws"
 
-  name = "${var.name}-${var.env}-ecs"
+  cluster_name = "${var.name}-${var.env}-ecs"
 
   container_insights = true
 
