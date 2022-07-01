@@ -2,10 +2,6 @@ module "key_pair" {
   source     = "terraform-aws-modules/key-pair/aws"
   key_name   = "${var.name}-${var.env}-ssh"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/te8jtSYXkNDwNWAR2GcNpXoDQPQh3/7SP6571rfLbWLp4aeZE2Sfx4KD6O8HxCsukfcVvRqUCv0yp6CzgN22apNP8lDdXP8b9aPF8fusMMHSev91vu0ms4wdP8Bv+UlknjutpPRo2/cwUYyQTJ2M1wTjBzUFQQf2eW0ihwOeHvb03rEKD3UvgZPXBVfxK43pVzstmMrkF14DP45zFra+lpol2uakRJDJ//7zUcPUW2J5SuOPWbUngIoQ5SzhYaxHZNAUQ55vk0ZpgtWwFKGHFltwIlKNp34fXwSI9vJXViZ8Ee6qdpt6dg3TFMmMKWiA9T4SOMj70rQ4PEZ6r/hh pi@raspberrypi"
-  # tags = {
-  #   Group = var.name
-  #   Env   = var.env
-  # }
 }
 
 resource "aws_security_group" "ecs" {
@@ -41,19 +37,7 @@ resource "aws_security_group" "ecs" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # tags = {
-  #   Group = var.name
-  #   Env   = var.env
-  # }
 }
-
-# resource "aws_ecs_capacity_provider" "prov1" {
-#   name = "${var.name}-${var.env}-prov1"
-
-#   auto_scaling_group_provider {
-#     auto_scaling_group_arn = module.asg.autoscaling_group_arn
-#   }
-# }
 
 module "ecs" {
   source = "terraform-aws-modules/ecs/aws"
@@ -88,27 +72,7 @@ module "ecs" {
       }
     }
   }
-
-  # capacity_providers = ["FARGATE", "FARGATE_SPOT", aws_ecs_capacity_provider.prov1.name]
-
-  # default_capacity_provider_strategy = [
-  #   {
-  #     capacity_provider = aws_ecs_capacity_provider.prov1.name #"FARGATE_SPOT"
-  #     weight            = "1"
-  #   }
-  # ]
-
-  # tags = {
-  #   Group = var.name
-  #   Env   = var.env
-  # }
 }
-
-# module "ec2_profile" {
-#   source = "terraform-aws-modules/ecs/aws//modules/ecs-instance-profile"
-
-#   name = "${var.name}-${var.env}-instance-profile"
-# }
 
 #For now we only use the AWS ECS optimized ami <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html>
 data "aws_ami" "amazon_linux_ecs" {
@@ -142,7 +106,6 @@ module "asg" {
   image_id                  = data.aws_ami.amazon_linux_ecs.id
   instance_type             = "t3.micro"
   security_groups           = [aws_security_group.ecs.id]
-  # iam_instance_profile_name = module.ec2_profile.iam_instance_profile_id
   user_data                 = data.template_file.user_data.rendered
 
   # Auto scaling group
@@ -162,47 +125,6 @@ data "template_file" "user_data" {
     cluster_name = "${var.name}-${var.env}-ecs"
   }
 }
-
-########### HELLO WORLD ###########
-# resource "aws_cloudwatch_log_group" "nginx_tf" {
-#   name              = "nginx-logs-group"
-#   retention_in_days = 1
-# }
-
-# resource "aws_ecs_task_definition" "nginx_tf" {
-#   family       = "nginx_tf"
-#   network_mode = "host"
-
-#   container_definitions = <<EOF
-# [
-#   {
-#     "name": "nginx",
-#     "image": "nginx",
-#     "cpu": 0,
-#     "memory": 128,
-#     "logConfiguration": {
-#       "logDriver": "awslogs",
-#       "options": {
-#         "awslogs-region": "${var.region}",
-#         "awslogs-group": "nginx-logs-group",
-#         "awslogs-stream-prefix": "ecs"
-#       }
-#     }
-#   }
-# ]
-# EOF
-# }
-
-# resource "aws_ecs_service" "primary" {
-#   name            = "primary"
-#   cluster         = module.ecs.ecs_cluster_id
-#   task_definition = aws_ecs_task_definition.nginx_tf.arn
-
-#   desired_count = 1
-
-#   deployment_maximum_percent         = 100
-#   deployment_minimum_healthy_percent = 0
-# }
 
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/ecs/${var.name}-${var.env}"
