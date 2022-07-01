@@ -47,29 +47,56 @@ resource "aws_security_group" "ecs" {
   # }
 }
 
-resource "aws_ecs_capacity_provider" "prov1" {
-  name = "${var.name}-${var.env}-prov1"
+# resource "aws_ecs_capacity_provider" "prov1" {
+#   name = "${var.name}-${var.env}-prov1"
 
-  auto_scaling_group_provider {
-    auto_scaling_group_arn = module.asg.autoscaling_group_arn
-  }
-}
+#   auto_scaling_group_provider {
+#     auto_scaling_group_arn = module.asg.autoscaling_group_arn
+#   }
+# }
 
 module "ecs" {
   source = "terraform-aws-modules/ecs/aws"
 
-  name = "${var.name}-${var.env}-ecs"
+  cluster_name = "${var.name}-${var.env}-ecs"
 
-  container_insights = true
+  # container_insights = true
 
-  capacity_providers = ["FARGATE", "FARGATE_SPOT", aws_ecs_capacity_provider.prov1.name]
-
-  default_capacity_provider_strategy = [
-    {
-      capacity_provider = aws_ecs_capacity_provider.prov1.name #"FARGATE_SPOT"
-      weight            = "1"
+    cluster_configuration = {
+    execute_command_configuration = {
+      logging = "OVERRIDE"
+      log_configuration = {
+        # You can set a simple string and ECS will create the CloudWatch log group for you
+        # or you can create the resource yourself as shown here to better manage retetion, tagging, etc.
+        # Embedding it into the module is not trivial and therefore it is externalized
+        cloud_watch_log_group_name = aws_cloudwatch_log_group.this.name
+      }
     }
-  ]
+  }
+
+  # Capacity provider
+  fargate_capacity_providers = {
+    FARGATE = {
+      default_capacity_provider_strategy = {
+        weight = 50
+        base   = 20
+      }
+    }
+    FARGATE_SPOT = {
+      default_capacity_provider_strategy = {
+        weight = 50
+      }
+    }
+  }
+
+  # capacity_providers = ["FARGATE", "FARGATE_SPOT", aws_ecs_capacity_provider.prov1.name]
+
+  # default_capacity_provider_strategy = [
+  #   {
+  #     capacity_provider = aws_ecs_capacity_provider.prov1.name #"FARGATE_SPOT"
+  #     weight            = "1"
+  #   }
+  # ]
 
   # tags = {
   #   Group = var.name
@@ -77,11 +104,11 @@ module "ecs" {
   # }
 }
 
-module "ec2_profile" {
-  source = "terraform-aws-modules/ecs/aws//modules/ecs-instance-profile"
+# module "ec2_profile" {
+#   source = "terraform-aws-modules/ecs/aws//modules/ecs-instance-profile"
 
-  name = "${var.name}-${var.env}-instance-profile"
-}
+#   name = "${var.name}-${var.env}-instance-profile"
+# }
 
 #For now we only use the AWS ECS optimized ami <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html>
 data "aws_ami" "amazon_linux_ecs" {
@@ -115,7 +142,7 @@ module "asg" {
   image_id                  = data.aws_ami.amazon_linux_ecs.id
   instance_type             = "t3.micro"
   security_groups           = [aws_security_group.ecs.id]
-  iam_instance_profile_name = module.ec2_profile.iam_instance_profile_id
+  # iam_instance_profile_name = module.ec2_profile.iam_instance_profile_id
   user_data                 = data.template_file.user_data.rendered
 
   # Auto scaling group
@@ -176,3 +203,8 @@ data "template_file" "user_data" {
 #   deployment_maximum_percent         = 100
 #   deployment_minimum_healthy_percent = 0
 # }
+
+resource "aws_cloudwatch_log_group" "this" {
+  name              = "/aws/ecs/${var.name}-${var.env}"
+  retention_in_days = 7
+}

@@ -75,7 +75,7 @@ EOF
 
 resource "aws_ecs_service" "app_service" {
   name            = "${var.name}-${var.env}-service"
-  cluster         = module.ecs.ecs_cluster_id
+  cluster         = module.ecs.cluster_id
   task_definition = aws_ecs_task_definition.app_task.arn
 
   desired_count = 1
