@@ -58,7 +58,7 @@ resource "aws_ecs_capacity_provider" "prov1" {
 module "ecs" {
   source = "terraform-aws-modules/ecs/aws"
 
-  cluster_name = "${var.name}-${var.env}-ecs"
+  name = "${var.name}-${var.env}-ecs"
 
   container_insights = true
 
@@ -77,11 +77,11 @@ module "ecs" {
   # }
 }
 
-# module "ec2_profile" {
-#   source = "terraform-aws-modules/ecs/aws//modules/ecs-instance-profile"
+module "ec2_profile" {
+  source = "terraform-aws-modules/ecs/aws//modules/ecs-instance-profile"
 
-#   name = "${var.name}-${var.env}-instance-profile"
-# }
+  name = "${var.name}-${var.env}-instance-profile"
+}
 
 #For now we only use the AWS ECS optimized ami <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html>
 data "aws_ami" "amazon_linux_ecs" {
