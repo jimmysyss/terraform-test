@@ -46,7 +46,7 @@ module "ecs" {
 
   # container_insights = true
 
-    cluster_configuration = {
+  cluster_configuration = {
     execute_command_configuration = {
       logging = "OVERRIDE"
       log_configuration = {
