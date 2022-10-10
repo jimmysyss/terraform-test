@@ -115,7 +115,7 @@ module "asg" {
   max_size                  = 2
   desired_capacity          = 1 # we don't need them for the example
   wait_for_capacity_timeout = 0
-  key_name                  = module.key_pair.key_pair_key_name
+  key_name                  = module.key_pair.key_pair_name
 }
 
 data "template_file" "user_data" {
